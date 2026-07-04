@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -5,7 +6,16 @@ using UnityEngine.AI;
 public class EnemyAI : MonoBehaviour
 {
 
+    private enum EnemyAIState
+    {
+        Run,
+        Hide,
+        Death
+    }
+
     private NavMeshAgent _agent;
+
+    [SerializeField] private EnemyAIState _enemyAIState = EnemyAIState.Run;
 
     [SerializeField] private int _currentWaypoint = 0;
     [SerializeField] private List<Transform> _waypoints = new List<Transform>();
@@ -49,6 +59,28 @@ public class EnemyAI : MonoBehaviour
 
     void Update()
     {
+        switch (_enemyAIState)
+        {
+            case EnemyAIState.Run:
+                // Intelligently select barriers to run and hide behind. 
+                _agent.isStopped = false;
+                Debug.Log("Running...");
+                break;
+            case EnemyAIState.Hide:
+                // Stop running when they are at their selected barrier for a random amount of time.
+                _agent.isStopped = true;
+                Debug.Log("Hiding...");
+                //StartCoroutine(EnemyHidingRoutine());
+                break;
+            case EnemyAIState.Death:
+                // Triggered when enemy is shot by player
+                // Award 50 points to player
+                // Start dying animation
+                Debug.Log("Dead");
+                break;
+        }
+
+
         if (_agent.remainingDistance < 0.5f && _currentWaypoint < _waypoints.Count - 1)
         {
             _currentWaypoint++;
@@ -63,15 +95,16 @@ public class EnemyAI : MonoBehaviour
         {
             gameObject.SetActive(false);
         }
+        else if (other.CompareTag("EnemyHidingPoint"))
+        {
+            _enemyAIState = EnemyAIState.Hide;
+            StartCoroutine(EnemyHidingRoutine());
+        }
     }
 
-    /*
-    private void OnDisable()
+    IEnumerator EnemyHidingRoutine()
     {
-        _currentWaypoint = 0;
-
-        if (_agent != null)
-            _agent.ResetPath();
+        yield return new WaitForSeconds(Random.Range(0.5f, 4f));
+        _enemyAIState = EnemyAIState.Run;
     }
-    */
 }

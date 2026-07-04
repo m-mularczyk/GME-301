@@ -11,7 +11,7 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private Transform _spawnLocation;
 
     [SerializeField] private bool _isSpawning= true;
-    [SerializeField] private float _spawnTimeStep = 5f;
+    [SerializeField] private float _spawnTimeStep = 6f;
 
     [SerializeField] private int _enemyPoolSize = 10;
     private List<GameObject> _enemyPool = new List<GameObject>();
@@ -78,7 +78,7 @@ public class SpawnManager : MonoBehaviour
         }
 
         // If pool is too small - create new enemy object and add to pool
-        GameObject newEnemy = Instantiate(_enemyPrefab, position, rotation);
+        GameObject newEnemy = Instantiate(_enemyPrefab, position, rotation, transform);
         _enemyPool.Add(newEnemy);
         return newEnemy;
     }
