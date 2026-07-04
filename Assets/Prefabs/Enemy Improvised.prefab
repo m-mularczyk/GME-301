@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3906194646660903764}
   - component: {fileID: 6953579266845627775}
   - component: {fileID: 242796159845601771}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Enemy Improvised
   m_TagString: Untagged
   m_Icon: {fileID: 0}
