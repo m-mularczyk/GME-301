@@ -23,6 +23,12 @@ public class EnemyAI : MonoBehaviour
 
     private void Awake()
     {
+        _agent = GetComponent<NavMeshAgent>();
+        if (_agent == null)
+        {
+            Debug.LogError("NavMeshAgent not found!");
+        }
+
         var waypointsHolder = GameObject.Find("Enemy AI waypoints");
         for (int i = 0; i < waypointsHolder.transform.childCount; i++)
         {
@@ -36,18 +42,12 @@ public class EnemyAI : MonoBehaviour
     }
     void Start()
     {
-        _agent = GetComponent<NavMeshAgent>();
-        if( _agent == null)
-        {
-            Debug.LogError("NavMeshAgent not found!");
-        }
 
-        // Heading towards first waypoint
-        _agent.SetDestination(_waypoints[_currentWaypoint].position);
     }
 
     private void OnEnable()
     {
+        _enemyAIState = EnemyAIState.Run;
         _currentWaypoint = 0;
 
         if (_agent != null && _waypoints != null && _waypoints.Count > 0)
@@ -64,19 +64,20 @@ public class EnemyAI : MonoBehaviour
             case EnemyAIState.Run:
                 // Intelligently select barriers to run and hide behind. 
                 _agent.isStopped = false;
-                Debug.Log("Running...");
+                //Debug.Log("Running...");
                 break;
             case EnemyAIState.Hide:
                 // Stop running when they are at their selected barrier for a random amount of time.
                 _agent.isStopped = true;
-                Debug.Log("Hiding...");
+                //Debug.Log("Hiding...");
                 //StartCoroutine(EnemyHidingRoutine());
                 break;
             case EnemyAIState.Death:
+                _agent.isStopped = true;
                 // Triggered when enemy is shot by player
                 // Award 50 points to player
                 // Start dying animation
-                Debug.Log("Dead");
+                //Debug.Log("Dead");
                 break;
         }
 
@@ -106,5 +107,18 @@ public class EnemyAI : MonoBehaviour
     {
         yield return new WaitForSeconds(Random.Range(0.5f, 4f));
         _enemyAIState = EnemyAIState.Run;
+    }
+
+    public void OnEnemyDead()
+    {
+        _enemyAIState = EnemyAIState.Death;
+        StartCoroutine(EnemyDeathRoutine());
+    }
+
+    IEnumerator EnemyDeathRoutine()
+    {
+        Debug.Log("Enemy killed");
+        yield return new WaitForSeconds(1f);
+        gameObject.SetActive(false);
     }
 }
