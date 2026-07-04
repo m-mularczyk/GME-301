@@ -9,6 +9,7 @@ TagManager:
   - Capsule
   - CinemachineTarget
   - Floor
+  - EnemyEndPosition
   layers:
   - Default
   - TransparentFX
