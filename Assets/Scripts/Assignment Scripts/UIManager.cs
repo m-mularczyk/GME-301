@@ -47,6 +47,7 @@ public class UIManager : MonoBehaviour
 
         _playerController.enabled = true;
         Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Update()

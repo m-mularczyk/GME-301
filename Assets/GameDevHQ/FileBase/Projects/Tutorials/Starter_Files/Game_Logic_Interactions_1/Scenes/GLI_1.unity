@@ -46064,7 +46064,7 @@ MonoBehaviour:
   _spawnLocation: {fileID: 2011440846}
   _spawnTimeStep: 5
   _enemyPoolSize: 10
-  _maxEnemiesToSpawn: 3
+  _maxEnemiesToSpawn: 5
   _uiManager: {fileID: 598835991}
   _enemiesEscaped: 0
 --- !u!4 &1763557197
