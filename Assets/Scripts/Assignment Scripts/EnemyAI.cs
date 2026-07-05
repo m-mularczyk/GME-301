@@ -20,6 +20,8 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private int _currentWaypoint = 0;
     [SerializeField] private List<Transform> _waypoints = new List<Transform>();
 
+    private UIManager _uiManager;
+
 
     private void Awake()
     {
@@ -27,6 +29,11 @@ public class EnemyAI : MonoBehaviour
         if (_agent == null)
         {
             Debug.LogError("NavMeshAgent not found!");
+        }
+        _uiManager = FindAnyObjectByType<UIManager>();
+        if( _uiManager == null)
+        {
+            Debug.LogError("UIManager not found!");
         }
 
         var waypointsHolder = GameObject.Find("Enemy AI waypoints");
@@ -49,6 +56,7 @@ public class EnemyAI : MonoBehaviour
     {
         _enemyAIState = EnemyAIState.Run;
         _currentWaypoint = 0;
+        transform.GetComponent<Collider>().enabled = true;
 
         if (_agent != null && _waypoints != null && _waypoints.Count > 0)
         {
@@ -75,6 +83,7 @@ public class EnemyAI : MonoBehaviour
             case EnemyAIState.Death:
                 _agent.isStopped = true;
                 // Triggered when enemy is shot by player
+                transform.GetComponent<Collider>().enabled = false; // Preventing killing the same enemy multiple times
                 // Award 50 points to player
                 // Start dying animation
                 //Debug.Log("Dead");
@@ -112,6 +121,7 @@ public class EnemyAI : MonoBehaviour
     public void OnEnemyDead()
     {
         _enemyAIState = EnemyAIState.Death;
+        transform.parent.GetComponent<SpawnManager>()?.EnemyKilled();
         StartCoroutine(EnemyDeathRoutine());
     }
 
