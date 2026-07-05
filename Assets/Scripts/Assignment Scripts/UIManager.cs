@@ -18,6 +18,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _enemyCountTxt;
     [SerializeField] private TextMeshProUGUI _timeLeftTxt;
     [SerializeField] private TextMeshProUGUI _gameOverTxt;
+    [SerializeField] private TextMeshProUGUI _successTxt;
 
     [SerializeField] private FPS_Controller _playerController;
 
@@ -42,6 +43,7 @@ public class UIManager : MonoBehaviour
         _timeDeadline = Time.time + _maxTimeInSeconds;
         _timerIsCounting = true;
         _gameOverTxt.gameObject.SetActive(false);
+        _successTxt.gameObject.SetActive(false);
 
         _playerController.enabled = true;
         Cursor.visible = false;
@@ -84,7 +86,15 @@ public class UIManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         _gameOverTxt.gameObject.SetActive(true);
         _timerIsCounting = false;
-        //Time.timeScale = 0;
+    }
+
+    public void Success()
+    {
+        _playerController.enabled = false;
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+        _successTxt.gameObject.SetActive(true);
+        _timerIsCounting = false;
     }
 
     public void ReloadGame()

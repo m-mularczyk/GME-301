@@ -95,6 +95,11 @@ public class SpawnManager : MonoBehaviour
         _enemiesKilled++;
         _uiManager.UpdateEnemyCount(_maxEnemiesToSpawn - _enemiesKilled);
         _uiManager.UpdateScore();
+
+        if(_enemiesKilled == _maxEnemiesToSpawn)
+        {
+            _uiManager.Success();
+        }
     }
     public void EnemyEscaped()
     {
