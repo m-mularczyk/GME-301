@@ -1,6 +1,7 @@
+using GameDevHQ.FileBase.Plugins.FPS_Character_Controller;
 using TMPro;
-using TMPro.EditorUtilities;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
@@ -16,8 +17,12 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _scoreTxt;
     [SerializeField] private TextMeshProUGUI _enemyCountTxt;
     [SerializeField] private TextMeshProUGUI _timeLeftTxt;
+    [SerializeField] private TextMeshProUGUI _gameOverTxt;
+
+    [SerializeField] private FPS_Controller _playerController;
 
     private float _timeDeadline;
+    private bool _timerIsCounting = true;
 
     private void Awake()
     {
@@ -28,23 +33,31 @@ public class UIManager : MonoBehaviour
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
     }
 
     void Start()
     {
         _scoreTxt.text = "Score: 0";
         _timeDeadline = Time.time + _maxTimeInSeconds;
+        _timerIsCounting = true;
+        _gameOverTxt.gameObject.SetActive(false);
+
+        _playerController.enabled = true;
+        Cursor.visible = false;
     }
 
     void Update()
     {
-        float timeLeft = _timeDeadline - Time.time;
+        if (_timerIsCounting)
+        {
+            float timeLeft = _timeDeadline - Time.time;
 
-        if (timeLeft < 0f)
-            timeLeft = 0f;
+            if (timeLeft < 0f)
+                timeLeft = 0f;
 
-        UpdateTimeUI(timeLeft);
+            UpdateTimeUI(timeLeft);
+        }
     }
 
     public void UpdateScore()
@@ -62,5 +75,20 @@ public class UIManager : MonoBehaviour
     private void UpdateTimeUI(float timeLeft)
     {
         _timeLeftTxt.text = "Time: " + Mathf.CeilToInt(timeLeft);
+    }
+
+    public void GameOver()
+    {
+        _playerController.enabled = false;
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+        _gameOverTxt.gameObject.SetActive(true);
+        _timerIsCounting = false;
+        //Time.timeScale = 0;
+    }
+
+    public void ReloadGame()
+    {
+        SceneManager.LoadScene(0);
     }
 }

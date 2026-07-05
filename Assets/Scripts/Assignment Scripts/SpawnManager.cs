@@ -19,6 +19,8 @@ public class SpawnManager : MonoBehaviour
 
     [SerializeField] private UIManager _uiManager;
 
+    [SerializeField] private int _enemiesEscaped = 0;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -28,7 +30,7 @@ public class SpawnManager : MonoBehaviour
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
 
         for (int i = 0; i < _enemyPoolSize; i++)
         {
@@ -93,5 +95,15 @@ public class SpawnManager : MonoBehaviour
         _enemiesKilled++;
         _uiManager.UpdateEnemyCount(_maxEnemiesToSpawn - _enemiesKilled);
         _uiManager.UpdateScore();
+    }
+    public void EnemyEscaped()
+    {
+        //Debug.Log("Enemy escaped!");
+        _enemiesEscaped++;
+        //if(_enemiesEscaped > _maxEnemiesToSpawn / 4)
+        if (_enemiesEscaped > 0)
+        {
+            _uiManager.GameOver();
+        }
     }
 }

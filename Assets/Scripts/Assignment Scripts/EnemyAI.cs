@@ -103,6 +103,7 @@ public class EnemyAI : MonoBehaviour
     {
         if (other.CompareTag("EnemyEndPosition"))
         {
+            transform.parent.GetComponent<SpawnManager>()?.EnemyEscaped();
             gameObject.SetActive(false);
         }
         else if (other.CompareTag("EnemyHidingPoint"))
