@@ -21,7 +21,7 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private List<Transform> _waypoints = new List<Transform>();
 
     private UIManager _uiManager;
-
+    private Animator _animator;
 
     private void Awake()
     {
@@ -34,6 +34,13 @@ public class EnemyAI : MonoBehaviour
         if( _uiManager == null)
         {
             Debug.LogError("UIManager not found!");
+        }
+
+        //_animator = GetComponentInChildren<Animator>();
+        _animator = GetComponent<Animator>();
+        if (_animator == null)
+        {
+            Debug.LogError("Animator not found!");
         }
 
         var waypointsHolder = GameObject.Find("Enemy AI waypoints");
@@ -73,12 +80,16 @@ public class EnemyAI : MonoBehaviour
                 // Intelligently select barriers to run and hide behind. 
                 _agent.isStopped = false;
                 //Debug.Log("Running...");
+                _animator.SetFloat("Speed", 10f);
+                _animator.SetBool("Hiding", false);
                 break;
             case EnemyAIState.Hide:
                 // Stop running when they are at their selected barrier for a random amount of time.
                 _agent.isStopped = true;
                 //Debug.Log("Hiding...");
                 //StartCoroutine(EnemyHidingRoutine());
+                _animator.SetFloat("Speed", 0);
+                _animator.SetBool("Hiding", true);
                 break;
             case EnemyAIState.Death:
                 _agent.isStopped = true;
@@ -87,6 +98,9 @@ public class EnemyAI : MonoBehaviour
                 // Award 50 points to player
                 // Start dying animation
                 //Debug.Log("Dead");
+                _animator.SetFloat("Speed", 0f);
+                _animator.SetBool("Hiding", false);
+                _animator.SetTrigger("Death");
                 break;
         }
 

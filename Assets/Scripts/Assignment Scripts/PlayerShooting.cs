@@ -15,7 +15,7 @@ public class PlayerShooting : MonoBehaviour
 
             if (Physics.Raycast(rayOrigin, out hitInfo, Mathf.Infinity, 1 << 10))
             {
-                //Debug.Log("Hit: " + hitInfo.collider.gameObject.name);
+                Debug.Log("Hit: " + hitInfo.collider.gameObject.name);
                 if (hitInfo.collider.CompareTag("Enemy"))
                 {
                     hitInfo.collider.GetComponent<EnemyAI>()?.OnEnemyDead();
