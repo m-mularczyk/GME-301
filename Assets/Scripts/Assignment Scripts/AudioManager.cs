@@ -34,7 +34,7 @@ public class AudioManager : MonoBehaviour
     {
         if (_isGameOver != true && _isGameFinished != true)
         {
-            _audioPlayer.PlayOneShot(_barrierHitSound);
+            _audioPlayer.PlayOneShot(_barrierHitSound, 1.5f);
         }
     }
 
