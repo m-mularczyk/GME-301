@@ -46702,11 +46702,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c690b7a8e2435846a5fce5112500ae8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnManager
-  _enemyPrefab: {fileID: 854879372347716446, guid: e8d98284c27cedc478a45e01706fe158, type: 3}
+  _enemyPrefab: {fileID: 854879372347716446, guid: 0ddbb11d7be34ea428f84dcf078b99b1, type: 3}
   _spawnLocation: {fileID: 2011440846}
   _spawnTimeStep: 5
   _enemyPoolSize: 10
-  _maxEnemiesToSpawn: 5
+  _maxEnemiesToSpawn: 2
   _uiManager: {fileID: 598835991}
   _enemiesEscaped: 0
 --- !u!4 &1763557197

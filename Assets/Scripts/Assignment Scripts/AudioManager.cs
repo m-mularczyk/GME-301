@@ -23,7 +23,7 @@ public class AudioManager : MonoBehaviour
 
     public void PlayShotSound()
     {
-        if (!_isGameOver && !_isGameFinished)
+        if (_isGameOver != true && _isGameFinished != true)
         {
             _audioPlayer.PlayOneShot(_shotSound);
         }
@@ -31,7 +31,7 @@ public class AudioManager : MonoBehaviour
 
     public void PlayBarrierHitSound()
     {
-        if (!_isGameOver && !_isGameFinished)
+        if (_isGameOver != true && _isGameFinished != true)
         {
             _audioPlayer.PlayOneShot(_barrierHitSound);
         }
@@ -40,6 +40,7 @@ public class AudioManager : MonoBehaviour
     public void PlaySuccessSound()
     {
         _audioPlayer.PlayOneShot(_successSound);
+        _isGameFinished = true;
     }
 
     public void PlayGameOverSound()
