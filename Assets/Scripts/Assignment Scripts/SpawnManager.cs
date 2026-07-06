@@ -101,7 +101,7 @@ public class SpawnManager : MonoBehaviour
 
         if (_enemiesEscaped > _enemiesAllowedToEscape)
         {
-            _uiManager.GameOver();
+            _uiManager.GameOver("Too many enemies escaped");
         }
     }
 }

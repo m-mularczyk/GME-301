@@ -60,7 +60,12 @@ public class UIManager : MonoBehaviour
             float timeLeft = _timeDeadline - Time.time;
 
             if (timeLeft < 0f)
+            {
                 timeLeft = 0f;
+                GameOver("Time is up");
+            }
+                
+
 
             UpdateTimeUI(timeLeft);
         }
@@ -83,12 +88,13 @@ public class UIManager : MonoBehaviour
         _timeLeftTxt.text = "Time: " + Mathf.CeilToInt(timeLeft);
     }
 
-    public void GameOver()
+    public void GameOver(string information)
     {
         _playerController.enabled = false;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
         _gameOverTxt.gameObject.SetActive(true);
+        _gameOverTxt.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = information;
         _timerIsCounting = false;
         _audioManager.PlayGameOverSound();
         Time.timeScale = 0;
