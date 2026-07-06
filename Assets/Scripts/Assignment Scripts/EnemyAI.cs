@@ -24,6 +24,7 @@ public class EnemyAI : MonoBehaviour
     private Animator _animator;
     private Coroutine hidingRoutine;
     private AudioManager _audioManager;
+    private bool _isDead = false;
 
     private void Awake()
     {
@@ -69,6 +70,8 @@ public class EnemyAI : MonoBehaviour
 
     private void OnEnable()
     {
+        _isDead = false;
+
         _enemyAIState = EnemyAIState.Run;
         _currentWaypoint = 0;
         transform.GetComponent<Collider>().enabled = true;
@@ -103,7 +106,6 @@ public class EnemyAI : MonoBehaviour
                 _agent.isStopped = true;
                 transform.GetComponent<Collider>().enabled = false; // Preventing killing the same enemy multiple times
                 
-                _animator.SetTrigger("Death");
                 if (hidingRoutine != null)
                 {
                     StopCoroutine(hidingRoutine);
@@ -145,6 +147,12 @@ public class EnemyAI : MonoBehaviour
 
     public void OnEnemyDead()
     {
+        if(_isDead) return;
+        
+        _isDead = true;
+
+        _animator.SetTrigger("Death");
+
         _enemyAIState = EnemyAIState.Death;
         transform.parent.GetComponent<SpawnManager>()?.EnemyKilled();
         StartCoroutine(EnemyDeathRoutine());
@@ -155,7 +163,7 @@ public class EnemyAI : MonoBehaviour
     IEnumerator EnemyDeathRoutine()
     {
         Debug.Log("Enemy killed");
-        yield return new WaitForSeconds(3f); // Waiting for death animation to play
+        yield return new WaitForSeconds(4f); // Waiting for death animation to play
         gameObject.SetActive(false);
     }
 }
