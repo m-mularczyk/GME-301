@@ -23,6 +23,7 @@ public class EnemyAI : MonoBehaviour
     private UIManager _uiManager;
     private Animator _animator;
     private Coroutine hidingRoutine;
+    private AudioManager _audioManager;
 
     private void Awake()
     {
@@ -35,6 +36,12 @@ public class EnemyAI : MonoBehaviour
         if( _uiManager == null)
         {
             Debug.LogError("UIManager not found!");
+        }
+
+        _audioManager = FindAnyObjectByType<AudioManager>();
+        if( _audioManager == null)
+        {
+            Debug.LogError("Audio Manager not found");
         }
 
         //_animator = GetComponentInChildren<Animator>();
@@ -141,6 +148,7 @@ public class EnemyAI : MonoBehaviour
         _enemyAIState = EnemyAIState.Death;
         transform.parent.GetComponent<SpawnManager>()?.EnemyKilled();
         StartCoroutine(EnemyDeathRoutine());
+        _audioManager.PlayEnemyDyingSound(transform.position);
         //Debug.Break();
     }
 

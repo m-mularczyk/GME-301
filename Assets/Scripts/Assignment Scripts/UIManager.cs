@@ -25,6 +25,8 @@ public class UIManager : MonoBehaviour
     private float _timeDeadline;
     private bool _timerIsCounting = true;
 
+    [SerializeField] private AudioManager _audioManager;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -87,6 +89,7 @@ public class UIManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         _gameOverTxt.gameObject.SetActive(true);
         _timerIsCounting = false;
+        _audioManager.PlayGameOverSound();
     }
 
     public void Success()
@@ -96,6 +99,7 @@ public class UIManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         _successTxt.gameObject.SetActive(true);
         _timerIsCounting = false;
+        _audioManager.PlaySuccessSound();
     }
 
     public void ReloadGame()

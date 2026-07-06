@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerShooting : MonoBehaviour
 {
+    [SerializeField] private AudioManager _audioManager;
 
     void Update()
     {
@@ -20,7 +21,13 @@ public class PlayerShooting : MonoBehaviour
                 {
                     hitInfo.collider.GetComponent<EnemyAI>()?.OnEnemyDead();
                 }
+                else if (hitInfo.collider.CompareTag("Barrier"))
+                {
+                    _audioManager.PlayBarrierHitSound();
+                }
             }
+
+            _audioManager.PlayShotSound();
         }
     }
 }
