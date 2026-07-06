@@ -19,6 +19,7 @@ public class SpawnManager : MonoBehaviour
 
     [SerializeField] private UIManager _uiManager;
 
+    [SerializeField] private int _enemiesAllowedToEscape = 0;
     [SerializeField] private int _enemiesEscaped = 0;
 
     private void Awake()
@@ -45,19 +46,12 @@ public class SpawnManager : MonoBehaviour
         _enemiesLeftToSpawn = _maxEnemiesToSpawn;
         StartCoroutine(EnemySpawningRoutine());
         _uiManager.UpdateEnemyCount(_maxEnemiesToSpawn);
-    }
-
-    void Update()
-    {
         
     }
 
     private void SpawnEnemy()
     {
-        //Instantiate(_enemyPrefab, _spawnLocation.position, Quaternion.identity);
-        //Debug.Log("Spawned enemy");
         GetEnemyFromPool(_spawnLocation.position, Quaternion.identity);
-        //Debug.Log("Spawned enemy from pool");
     }
 
     IEnumerator EnemySpawningRoutine()
@@ -103,10 +97,9 @@ public class SpawnManager : MonoBehaviour
     }
     public void EnemyEscaped()
     {
-        //Debug.Log("Enemy escaped!");
         _enemiesEscaped++;
-        //if(_enemiesEscaped > _maxEnemiesToSpawn / 4)
-        if (_enemiesEscaped > 0)
+
+        if (_enemiesEscaped > _enemiesAllowedToEscape)
         {
             _uiManager.GameOver();
         }

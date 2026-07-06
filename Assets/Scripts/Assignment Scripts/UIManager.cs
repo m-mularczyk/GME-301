@@ -50,6 +50,7 @@ public class UIManager : MonoBehaviour
         _playerController.enabled = true;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+        Time.timeScale = 1f;
     }
 
     void Update()
@@ -90,6 +91,7 @@ public class UIManager : MonoBehaviour
         _gameOverTxt.gameObject.SetActive(true);
         _timerIsCounting = false;
         _audioManager.PlayGameOverSound();
+        Time.timeScale = 0;
     }
 
     public void Success()
@@ -100,6 +102,7 @@ public class UIManager : MonoBehaviour
         _successTxt.gameObject.SetActive(true);
         _timerIsCounting = false;
         _audioManager.PlaySuccessSound();
+        Time.timeScale = 0;
     }
 
     public void ReloadGame()

@@ -22,7 +22,7 @@ public class EnemyAI : MonoBehaviour
 
     private UIManager _uiManager;
     private Animator _animator;
-    private Coroutine hidingRoutine;
+    private Coroutine _hidingRoutine;
     private AudioManager _audioManager;
     private bool _isDead = false;
 
@@ -65,7 +65,7 @@ public class EnemyAI : MonoBehaviour
     }
     void Start()
     {
-        hidingRoutine = StartCoroutine(EnemyHidingRoutine());
+        _hidingRoutine = StartCoroutine(EnemyHidingRoutine());
     }
 
     private void OnEnable()
@@ -88,29 +88,18 @@ public class EnemyAI : MonoBehaviour
         switch (_enemyAIState)
         {
             case EnemyAIState.Run:
-                // Intelligently select barriers to run and hide behind. 
                 //Debug.Log("Running...");
                 _agent.isStopped = false;
                 _animator.SetBool("Hiding", false);
                 _animator.SetFloat("Speed", 10f);
                 break;
             case EnemyAIState.Hide:
-                // Stop running when they are at their selected barrier for a random amount of time.
                 //Debug.Log("Hiding...");
                 _agent.isStopped = true;
                 _animator.SetBool("Hiding", true);
                 break;
             case EnemyAIState.Death:
-                // Triggered when enemy is shot by player
                 //Debug.Log("Dead");
-                _agent.isStopped = true;
-                transform.GetComponent<Collider>().enabled = false; // Preventing killing the same enemy multiple times
-                
-                if (hidingRoutine != null)
-                {
-                    StopCoroutine(hidingRoutine);
-                    hidingRoutine = null;
-                }
                 break;
         }
 
@@ -131,7 +120,7 @@ public class EnemyAI : MonoBehaviour
         else if (other.CompareTag("EnemyHidingPoint"))
         {
             _enemyAIState = EnemyAIState.Hide;
-            var hidingRoutine = StartCoroutine(EnemyHidingRoutine());
+            _hidingRoutine = StartCoroutine(EnemyHidingRoutine());
         }
     }
 
@@ -154,6 +143,16 @@ public class EnemyAI : MonoBehaviour
         _animator.SetTrigger("Death");
 
         _enemyAIState = EnemyAIState.Death;
+
+        _agent.isStopped = true;
+        transform.GetComponent<Collider>().enabled = false; // Preventing killing the same enemy multiple times
+
+        if (_hidingRoutine != null)
+        {
+            StopCoroutine(_hidingRoutine);
+            _hidingRoutine = null;
+        }
+
         transform.parent.GetComponent<SpawnManager>()?.EnemyKilled();
         StartCoroutine(EnemyDeathRoutine());
         _audioManager.PlayEnemyDyingSound(transform.position);
@@ -163,7 +162,7 @@ public class EnemyAI : MonoBehaviour
     IEnumerator EnemyDeathRoutine()
     {
         Debug.Log("Enemy killed");
-        yield return new WaitForSeconds(4f); // Waiting for death animation to play
+        yield return new WaitForSeconds(3.5f); // Waiting for death animation to play
         gameObject.SetActive(false);
     }
 }
