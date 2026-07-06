@@ -7,6 +7,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip _successSound;
     [SerializeField] private AudioClip _gameOverSound;
     [SerializeField] private AudioClip _barrierHitSound;
+    [SerializeField] private AudioClip _explosionSound;
 
     private AudioSource _audioPlayer;
     private bool _isGameOver = false;
@@ -56,5 +57,10 @@ public class AudioManager : MonoBehaviour
     {
         //AudioSource.PlayClipAtPoint(_dyingEnemySound, enemyPosition, 5f);
         _audioPlayer.PlayOneShot(_dyingEnemySound, 0.2f);
+    }
+
+    public void PlayExplosionSound()
+    {
+        _audioPlayer.PlayOneShot(_explosionSound, 0.5f);
     }
 }

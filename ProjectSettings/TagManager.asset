@@ -13,6 +13,7 @@ TagManager:
   - EnemyHidingPoint
   - Enemy
   - Barrier
+  - ExplosiveBarrel
   layers:
   - Default
   - TransparentFX

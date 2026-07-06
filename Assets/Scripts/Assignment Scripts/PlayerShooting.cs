@@ -25,6 +25,11 @@ public class PlayerShooting : MonoBehaviour
                 {
                     _audioManager.PlayBarrierHitSound();
                 }
+                else if (hitInfo.collider.CompareTag("ExplosiveBarrel"))
+                {
+                    hitInfo.collider.GetComponent<ExplosiveBarrel>()?.Explode();
+                    _audioManager.PlayExplosionSound();
+                }
             }
 
             _audioManager.PlayShotSound();
